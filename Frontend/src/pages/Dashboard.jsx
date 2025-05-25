@@ -1,10 +1,8 @@
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
 import { darkmodeContext } from "../misc/DarkmodeContext";
-import ColorPieChart from "../Examples/Piechart";
 import Piecharts from "../components/PieChart";
 import axios from "axios";
-import Table from "../components/Table";
 import TransHistory from "../components/Table";
 import { useNavigate } from "react-router-dom";
 

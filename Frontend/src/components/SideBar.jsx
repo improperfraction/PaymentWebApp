@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { darkmodeContext } from "../misc/DarkmodeContext";
-import { Link, Links, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SideBar() {
 

@@ -3,7 +3,6 @@ import { darkmodeContext } from "../misc/DarkmodeContext";
 import SideBar from "../components/SideBar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Test from "../misc/Test";
 
 
 function History() {
