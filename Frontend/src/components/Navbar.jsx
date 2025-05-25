@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 function Navbar() {
 
     const { darkmode, setDarkmode } = useContext(darkmodeContext);
+    
     return (
         <>
             <div className={`${darkmode ? "dark" : ""}`}>

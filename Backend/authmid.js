@@ -1,9 +1,10 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const jwtpass = require("./config");
-const app = express();
-app.use(express.json());
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
+dotenv.config();
+
+const jwtpass = process.env.JWT_SECRET;
 
 function authmid(req, res, next) {
     try {
@@ -11,7 +12,7 @@ function authmid(req, res, next) {
         if (!authHeader || !authHeader.startsWith("Bearer")) {
             return res.status(401).json({
                 message: "incorrect auth header"
-            })
+            });
         }
         const token = authHeader.split(" ")[1];
 
@@ -19,15 +20,13 @@ function authmid(req, res, next) {
         if (decoded.userId) {
             req.userId = decoded.userId;
             next();
-        }
-        else {
+        } else {
             return res.status(401).json({
                 message: "invalid token"
-            })
+            });
         }
-    }
-    catch (err) {
-        if(err.name === "TokenExpiredError") {
+    } catch (err) {
+        if (err.name === "TokenExpiredError") {
             return res.status(401).json({
                 message: "Token has expired"
             });
@@ -39,4 +38,4 @@ function authmid(req, res, next) {
     }
 }
 
-module.exports = authmid;
+export default authmid;

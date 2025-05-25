@@ -1,6 +1,6 @@
 import axios from "axios";
 import { set } from "mongoose";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function TransTable() {
 
@@ -64,7 +64,7 @@ function TransTable() {
     )
 }
 
-function SMTable({ users, mCard, setmCard, setselectedUser }) {
+const SMTable= React.memo(({ users, mCard, setmCard, setselectedUser })=> {
     return (
         <div className="lg:hidden">
             <div className="mt-3 lg:mt-5 flex flex-row items-center justify-center">
@@ -72,7 +72,7 @@ function SMTable({ users, mCard, setmCard, setselectedUser }) {
                     <tbody className="bg-gray-200 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 text-center ">
                         {users.slice(0,4).map((user, index) => {
                             return (
-                                <tr className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
+                                <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
                                     <td className=" py-2 whitespace-nowrap text-sm text-gray-500 dark:text-white">
                                         <div className=" flex flex-row items-center justify-start ml-2 ">
                                             <img src={user.avatar} alt="Avatar" className="w-12 h-12 lg:w-16 lg:h-16 p-1 bg-slate-300 dark:bg-slate-600 rounded-full mr-3" />
@@ -107,9 +107,9 @@ function SMTable({ users, mCard, setmCard, setselectedUser }) {
             </div>
         </div>
     )
-}
+})
 
-function LGTable({ users, mCard, setmCard, setselectedUser }) {
+const LGTable= React.memo(({ users, mCard, setmCard, setselectedUser })=> {
     return (
         <div className="hidden lg:block">
             <div className=" mt-3 lg:mt-5 flex flex-row items-center justify-center">
@@ -117,7 +117,7 @@ function LGTable({ users, mCard, setmCard, setselectedUser }) {
                     <tbody className="bg-gray-200 divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700 text-center ">
                         {users.slice(0,8).map((user, index) => {
                             return (
-                                <tr className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
+                                <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700 border-b border-gray-300 dark:border-gray-600">
                                     <td className=" py-2 whitespace-nowrap text-sm text-gray-500 dark:text-white">
                                         <div className=" flex flex-row items-center justify-start ml-2 ">
                                             <img src={user.avatar} alt="Avatar" className="w-12 h-12 lg:w-16 lg:h-16 p-1 bg-slate-300 dark:bg-slate-600 rounded-full mr-3" />
@@ -152,16 +152,33 @@ function LGTable({ users, mCard, setmCard, setselectedUser }) {
             </div>
         </div>
     )
-}
+})
 
-function MoneyCard({ firstName, lastName, userId, avatar, setmCard, mCard }) {
+const MoneyCard= React.memo(({ firstName, lastName, userId, avatar, setmCard, mCard })=> {
     const token = localStorage.getItem("token");
     const [amt, setAmt] = useState('');
     const [status, setStatus] = useState(200);
     const [message, setMessage] = useState("");
+
+    const cardRef= useRef(null);
+
+    useEffect(()=>{
+        const clickOut= (event)=>{
+            if(cardRef.current && !cardRef.current.contains(event.target)){
+                setmCard(!mCard);
+            }
+        }
+        document.addEventListener("mousedown", clickOut);
+        return () => {
+            document.removeEventListener("mousedown", clickOut);
+        }
+
+    },[setmCard])
+
     return (
         <div className="w-screen h-screen fixed inset-0 bg-black bg-opacity-20 z-50 flex flex-row items-center justify-center">
-            <div class="w-full mx-6 lg:mx-0 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-4 dark:bg-gray-700 dark:border-gray-700">
+            <div ref={cardRef}
+             class="w-full mx-6 lg:mx-0 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-4 dark:bg-gray-700 dark:border-gray-700">
                 <form class="" onSubmit={async (e) => {
                     e.preventDefault();
                     try {
@@ -218,6 +235,6 @@ function MoneyCard({ firstName, lastName, userId, avatar, setmCard, mCard }) {
             </div>
         </div>
     )
-}
+})
 
 export default TransTable;

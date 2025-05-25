@@ -1,12 +1,31 @@
-const express = require('express');
-const mainRouter= require("./routes/index");    
-const cors = require('cors');
-const app= express()
+import express from 'express';
+import mainRouter from './routes/index.js';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const PORT = process.env.PORT || 3000;
+const app = express();
+
+// Resolve __dirname in ES modules
+//const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.resolve();
+
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/v1", mainRouter);
+// API routes
+app.use('/api/v1', mainRouter);
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-})
+// Serve static files
+app.use(express.static(path.join(__dirname, '/Frontend/dist')));
+
+// Wildcard route for SPA (Single Page Application)
+app.get('/*splat', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'Frontend', 'dist', 'index.html'));
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});

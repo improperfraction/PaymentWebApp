@@ -1,83 +1,82 @@
-const mongo= require("mongoose");
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
-
-mongo.connect("mongodb+srv://realiasms96:Catwriter%40123@cluster0.jpp2qsd.mongodb.net/rizzpay");
-
-const UserSchema= new mongo.Schema({
-    firstName:{type: String, required: true},
-    lastName:{type:String, required:true},
-    email:{type:String, required:true},
-    password:{type:String, required:true},
-    gender: {type: String, required: true},
-    avatar: {type: String, required: true},
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
-const acctSchema= new mongo.Schema({
-    userId :{
-        type: mongo.Schema.Types.ObjectId,
+const UserSchema = new mongoose.Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    gender: { type: String, required: true },
+    avatar: { type: String, required: true },
+});
+
+const acctSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
-    balance:{
+    balance: {
         type: Number,
         default: 0,
-        required: true
+        required: true,
     },
-    walletId:{
+    walletId: {
         type: Number,
         required: true,
     },
-    totalDeposited: { // Tracks total money deposited by the user
+    totalDeposited: {
         type: Number,
         default: 0,
-        required: true
+        required: true,
     },
-    totalReceived: { // Tracks total money received by the user
+    totalReceived: {
         type: Number,
         default: 0,
-        required: true
+        required: true,
     },
-    totalSent: { // Tracks total money sent by the user
+    totalSent: {
         type: Number,
         default: 0,
-        required: true
-    } 
+        required: true,
+    },
 });
 
-
-const transactionSchema= new mongo.Schema({
-    userId:{
-        type: mongo.Schema.Types.ObjectId,
+const transactionSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
-    counterParty:{
-        type:mongo.Schema.Types.ObjectId,
+    counterParty: {
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
-        required: true
+        required: true,
     },
-    amount:{
+    amount: {
         type: Number,
-        required: true
+        required: true,
     },
-    status:{
+    status: {
         type: String,
         enum: ["sent", "received"],
-        required:true  
+        required: true,
     },
     date: {
         type: Date,
-        default: Date.now
-    }
+        default: Date.now,
+    },
 });
 
-const User= mongo.model("User", UserSchema);
-const Acccount= mongo.model("Acccount", acctSchema);
-const Transaction= mongo.model("Transaction", transactionSchema);
+const User = mongoose.model("User", UserSchema);
+const Acccount = mongoose.model("Acccount", acctSchema);
+const Transaction = mongoose.model("Transaction", transactionSchema);
 
-
-
-module.exports= {
-    User, Acccount, Transaction
-}
+export { User, Acccount, Transaction };

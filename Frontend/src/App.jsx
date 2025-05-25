@@ -36,8 +36,6 @@ function App() {
           </Routes>
         </BrowserRouter>
       </darkmodeContext.Provider>
-
-
     </>
   )
 }
