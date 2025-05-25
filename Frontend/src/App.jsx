@@ -3,8 +3,8 @@ import Launch from './pages/Launch'
 import { darkmodeContext } from './misc/DarkmodeContext'
 import Signup from './pages/Signup';
 import Signin from './pages/Signin';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Dashboard from './pages/DashBoard';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 import ColorPieChart from './Examples/Piechart';
 import Test from './misc/Test';
 import Start from './pages/Start';
