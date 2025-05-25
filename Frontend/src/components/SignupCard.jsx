@@ -23,7 +23,7 @@ function SignupCard() {
                     <form class="space-y-4 md:space-y-6" onSubmit={async (e) => {
                         e.preventDefault();
                         try {
-                            const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
+                            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/user/signup`, {
                                 "email": email,
                                 "firstName": firstname,
                                 "lastName": lastname,
