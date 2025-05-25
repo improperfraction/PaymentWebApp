@@ -7,6 +7,7 @@ function SigninCard() {
     const [pword, setPword] = useState("");
     const [status, setStatus] = useState(200);
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const navigate = useNavigate();
     return (
@@ -18,6 +19,7 @@ function SigninCard() {
                     </h1>
                     <form onSubmit={async (e) => {
                         e.preventDefault();
+                        setLoading(true); // Start loading
                         try {
                             const response = await axios.post("https://rizzpay.onrender.com/api/v1/user/signin", {
                                 "email": email,
@@ -31,24 +33,28 @@ function SigninCard() {
                             }
                         }
                         catch (err) {
-                            setStatus(err.response.status);
-                            setMessage(err.response.data.message);
+                            setStatus(err.response?.status || 500);
+                            setMessage(err.response?.data?.message || "Something went wrong");
+                        } finally {
+                            setLoading(false); // Stop loading
                         }
                     }} class="space-y-4 md:space-y-6">
                         <div>
-                            <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                            <label htmlFor="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                             <input type="email" name="email" onChange={(e) => {
                                 setEmail(e.target.value)
                             }} id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
                         </div>
                         <div className="">
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                            <label htmlFor="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                             <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" onChange={(e) => {
                                 setPword(e.target.value)
                             }} />
                         </div>
                         <div>
-                            <button type="submit" class="w-full  text-white bg-gradient-to-br from-blue-400 to-blue-800 hover:from-blue-500 hover:to-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</button>
+                            <button type="submit" class="w-full text-white bg-gradient-to-br from-blue-400 to-blue-800 hover:from-blue-500 hover:to-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center" disabled={loading}>
+                                {loading ? "Loading..." : "Sign in"}
+                            </button>
                             {status != 200 && <p class="text-sm mt-3 text-center font-semibold text-red-600 dark:text-red-400">
                                 {message}
                             </p>}
@@ -58,9 +64,7 @@ function SigninCard() {
                                 }} class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up here</button>
                             </p>
                         </div>
-
                     </form>
-
                 </div>
             </div>
         </>

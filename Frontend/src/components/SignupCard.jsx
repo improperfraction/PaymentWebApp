@@ -12,6 +12,7 @@ function SignupCard() {
 
     const [status, setStatus] = useState(200);
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false); // Add loading state
 
     return (
         <>
@@ -22,6 +23,7 @@ function SignupCard() {
                     </h1>
                     <form class="space-y-4 md:space-y-6" onSubmit={async (e) => {
                         e.preventDefault();
+                        setLoading(true); // Start loading
                         try {
                             const response = await axios.post("https://rizzpay.onrender.com/api/v1/user/signup", {
                                 "email": email,
@@ -43,8 +45,10 @@ function SignupCard() {
                             }
                         }
                         catch (err) {
-                            setStatus(err.response.status);
-                            setMessage("Something went wrong, please try again");
+                            setStatus(err.response?.status || 500);
+                            setMessage(err.response?.data?.message || "Something went wrong. Please try again");
+                        } finally {
+                            setLoading(false); // Stop loading
                         }
                     }}>
                         <div>
@@ -92,7 +96,8 @@ function SignupCard() {
                             }}>Sign in here</button>
                         </p> */}
                         <div>
-                            <button type="submit" class="w-full  text-white bg-gradient-to-br from-blue-400 to-blue-800 hover:from-blue-500 hover:to-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create an account</button>
+                            <button type="submit" class="w-full  text-white bg-gradient-to-br from-blue-400 to-blue-800 hover:from-blue-500 hover:to-blue-900 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                {loading? "Loading..." : "Create an account"}</button>
                             {status != 200 && <p class="text-sm mt-3 text-center font-semibold text-red-600 dark:text-red-400">
                                 {message}
                             </p>}

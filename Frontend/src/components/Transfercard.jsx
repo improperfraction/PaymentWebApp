@@ -158,6 +158,7 @@ const MoneyCard= React.memo(({ firstName, lastName, userId, avatar, setmCard, mC
     const [amt, setAmt] = useState('');
     const [status, setStatus] = useState(200);
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const cardRef= useRef(null);
 
@@ -180,6 +181,7 @@ const MoneyCard= React.memo(({ firstName, lastName, userId, avatar, setmCard, mC
              class="w-full mx-6 lg:mx-0 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-4 dark:bg-gray-700 dark:border-gray-700">
                 <form class="" onSubmit={async (e) => {
                     e.preventDefault();
+                    setLoading(true);
                     try {
                         const response = await axios.post("https://rizzpay.onrender.com/api/v1/account/transfer", {
                             to: userId,
@@ -198,11 +200,12 @@ const MoneyCard= React.memo(({ firstName, lastName, userId, avatar, setmCard, mC
                         }
                     }
                     catch (err) {
-                        setStatus(err.response.status);
-                        setMessage(err.response.data.error);
-                    }
+                        setStatus(err.response?.status || 500);
+                        setMessage(err.response?.data?.message || "Something went wrong");
+                    } 
                     finally {
                         setAmt('');
+                        setLoading(false);
                         setTimeout(() => {
                             setmCard(!mCard);
                         }, 2000);
@@ -227,7 +230,7 @@ const MoneyCard= React.memo(({ firstName, lastName, userId, avatar, setmCard, mC
                             setAmt(Number(e.target.value));
                         }} name="password" id="password" placeholder="Enter amount" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
                     </div>
-                    <button type="submit" class="w-full mt-6 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700">Initiate Transfer</button>
+                    <button type="submit" class="w-full mt-6 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700">{loading? "Loading...": "Initiate Transfer"}</button>
                 </form>
                 {status != 200 && <p class="text-sm mt-3 text-center font-semibold text-red-600 dark:text-red-400">{message}</p>}
                 {status === 200 && <p class="text-sm mt-3 text-center font-semibold text-green-600 dark:text-green-400">{message}</p>}
