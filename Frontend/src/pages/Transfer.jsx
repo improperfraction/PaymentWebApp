@@ -27,7 +27,7 @@ function Transfer() {
 
             const getBal = async () => {
                 try {
-                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/balance`, {
+                    const response = await axios.get("https://rizzpay.onrender.com/api/v1/account/balance", {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }

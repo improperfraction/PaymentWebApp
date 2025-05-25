@@ -28,7 +28,7 @@ function Dashboard() {
 
             const getBal = async () => {
                 try {
-                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/balance`, {
+                    const response = await axios.get("https://rizzpay.onrender.com/api/v1/account/balance", {
                         headers: {
                             Authorization: `Bearer ${token}`
                         }
@@ -55,6 +55,7 @@ function Dashboard() {
                                 <div className="h-24 rounded-2xl">
                                     <h2 className="text-2xl lg:text-4xl text-black dark:text-white font-extrabold">
                                         Welcome to RizzPay, {firstName}
+                                        {console.log(process.env.REACT_APP_API_URL)}
                                     </h2>
                                     <h3 className="mt-1 lg:mt-2 ml-0 lg:ml-1 text-base lg:text-lg text-blue-950 dark:text-white">
                                         Manage your finances with ease using our secure and user-friendly payment application

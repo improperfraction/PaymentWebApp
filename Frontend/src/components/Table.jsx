@@ -11,7 +11,7 @@ function TransHistory() {
         const token = localStorage.getItem("token");
         const transactionHistory = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/transhistory`, {
+                const response = await axios.get("https://rizzpay.onrender.com/api/v1/account/transhistory", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

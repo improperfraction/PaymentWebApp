@@ -19,7 +19,7 @@ function SigninCard() {
                     <form onSubmit={async (e) => {
                         e.preventDefault();
                         try {
-                            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/user/signin`, {
+                            const response = await axios.post("https://rizzpay.onrender.com/api/v1/user/signin", {
                                 "email": email,
                                 "password": pword
                             });

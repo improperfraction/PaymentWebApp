@@ -10,7 +10,7 @@ function Piecharts() {
 
         const acctDetails = async () => {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/account/acctdetails`, {
+                const response = await axios.get("https://rizzpay.onrender.com/api/v1/account/acctdetails", {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
